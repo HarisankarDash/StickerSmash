@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import WelcomeScreen from './screens/WelcomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignUpScreen';
 
-const SignupScreen = ({ onNavigate }) => {
+const App = ({ onNavigate }) => {
+   const [page, setPage] = useState('Welcome');
+
+   const render = () => {
+    switch(page) {
+        case 'Welcome':
+            return <WelcomeScreen onNavigate={(data) => setPage(data)}/>;
+    case 'Login':
+            return <LoginScreen onNavigate={(data) => setPage(data)}/>;
+    case 'Signup':
+            return <SignupScreen onNavigate={(data) => setPage(data)}/>;
+     default:
+          return <WelcomeScreen onNavigate={(data) => setPage(data)}/>;
+
+    }
+   }
+
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
-            <View>
-                <TextInput style={styles.input} placeholder="Email" />
-            </View>
-            <View>
-                <TextInput style={styles.input} placeholder="Password" secureTextEntry />
-            </View>
-            <View>
-                <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry />
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button title="Login" style={styles.button} onPress={() => {}} />
-                <View style={styles.space} /> {/* Space between buttons */}
-                <Button title="Back to Welcome" style={styles.button} onPress={() => onNavigate('Welcome')} />
-            </View>
+            {render()}
         </View>
     );
 };
@@ -54,4 +60,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SignupScreen;
+export default App;
