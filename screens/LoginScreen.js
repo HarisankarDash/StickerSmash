@@ -1,19 +1,25 @@
 import React from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ImageBackground } from 'react-native';
 
-const LoginScreen = ({ onNavigate }) => {
+const LoginScreen = ({ onLogin, onNavigate }) => {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    const handleLogin = () => {
+        onLogin(email, password);
+    };
     return (
      
             <View style={styles.container}>
                 <Text style={styles.title}>Login</Text>
                 <View>
-                <TextInput style={styles.input} placeholder="Email" />
+                <TextInput value={email} style={styles.input} placeholder="Email" onChangeText={newText => setEmail(newText)} />
                 </View>
                <View>
-               <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+               <TextInput value={password}  style={styles.input} placeholder="Password" secureTextEntry onChangeText={newText => setPassword(newText)} />
                </View>
                 <View style={styles.buttonContainer}>
-                    <Button title="Login" style={styles.button} onPress={() => {}} />
+                    <Button title="Login" style={styles.button} onPress={() => {handleLogin()}} />
                     <Button title="Back to Welcome" style={styles.button} onPress={() => onNavigate('Welcome')} />
                 </View>
             </View>

@@ -15,7 +15,7 @@ const SignupScreen = ({ onNavigate }) => {
             <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry />
             </View>
             <View style={styles.buttonContainer}>
-                    <Button title="Login" style={styles.button} onPress={() => {}} />
+                    <Button title="Sign Up" style={styles.button} onPress={() => {}} />
                     <Button title="Back to Welcome" style={styles.button} onPress={() => onNavigate('Welcome')} />
                 </View>
         </View>

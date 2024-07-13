@@ -1,30 +1,53 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import AnotherWelcomeScreen from './screens/AnotherWelcomeScreen';
 import SignupScreen from './screens/SignUpScreen';
 
-const App = ({ onNavigate }) => {
-   const [page, setPage] = useState('Welcome');
+const App = () => {
+    const [page, setPage] = useState('Welcome');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-   const render = () => {
-    switch(page) {
-        case 'Welcome':
-            return <WelcomeScreen onNavigate={(data) => setPage(data)}/>;
-    case 'Login':
-            return <LoginScreen onNavigate={(data) => setPage(data)}/>;
-    case 'Signup':
-            return <SignupScreen onNavigate={(data) => setPage(data)}/>;
-     default:
-          return <WelcomeScreen onNavigate={(data) => setPage(data)}/>;
+    const handleLogin = (email, password) => {
+        // Check if the entered credentials are correct
+        if (email === 'hari@123' && password === '1234') {
+            setIsLoggedIn(true);
+            setPage('AnotherWelcome');
+        } else {
+            alert('Invalid credentials. Please try again.');
+        }
+    };
 
-    }
-   }
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setPage('Welcome');
+    };
 
+    const unnavigate = () => {
+        // Implement logic to unnavigate or reset state
+        setPage('Welcome'); // For example, resetting to WelcomeScreen
+    };
+
+    const renderScreen = () => {
+        
+        switch (page) {
+            case 'Welcome':
+                return <WelcomeScreen onNavigate={setPage} />;
+            case 'Login':
+                return <LoginScreen onLogin={handleLogin} onNavigate={setPage} />;
+            case 'AnotherWelcome':
+                return <AnotherWelcomeScreen onSignOut={handleLogout} onNavigate={setPage} />;
+            case 'Signup':
+                return <SignupScreen onNavigate={setPage}/>
+            default:
+                return <WelcomeScreen onNavigate={setPage} />;
+        }
+    };
 
     return (
         <View style={styles.container}>
-            {render()}
+            {renderScreen()}
         </View>
     );
 };
@@ -34,29 +57,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 20,
-    },
-    input: {
-        width: '100%',
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20,
-        paddingLeft: 10,
-        backgroundColor: 'white',
-        borderRadius: 5,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    space: {
-        width: 10,
     },
 });
 
