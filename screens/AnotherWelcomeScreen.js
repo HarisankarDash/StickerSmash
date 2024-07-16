@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, ScrollView } from 'react-native';
-import img from './../assets/img1.jpg'
+import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native';
+import HelpScreen from './HelpScreen'; // Ensure HelpScreen import is correct and matches file name
 
-const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
-
+const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
     const handleSignOut = () => {
         onSignOut();
+    };
+
+    const handleHelp = () => {
+        onNavigate('Help'); // Ensure this matches the component name in switch case
     };
 
     const cards = [
@@ -52,47 +55,72 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     ];
 
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/img9.jpg')} style={styles.backgroundImage} />
-            <Text style={styles.title}>PICK 2 GET 1 FREE!!</Text>
-            <Button title="Sign Out" onPress={handleSignOut} />
-            <ScrollView contentContainerStyle={styles.cardsContainer}>
-                {cards.map((card, index) => (
-                    <View key={index} style={styles.card}>
-                         <Image source={card.image} style={styles.cardImage} />
-                        <Text style={styles.cardName}>{card.name}</Text>
-                        <Text style={styles.cardInfo}>{card.info}</Text>
-                    </View>
-                ))}
-            </ScrollView>
-        </View>
+        <ImageBackground 
+            source={require('../assets/img10.jpg')} 
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <View style={styles.overlay}>
+                <View style={styles.header}>
+                    <Image source={require('../assets/img11.png')} style={styles.logo} />
+                    <Text style={styles.username}>EXPLORE {username}</Text>
+                </View>
+                <Text style={styles.title}>PICK 2 GET 1 FREE!!</Text>
+                <ScrollView contentContainerStyle={styles.cardsContainer}>
+                    {cards.map((card, index) => (
+                        <View key={index} style={styles.card}>
+                            <Image source={card.image} style={styles.cardImage} />
+                            <Text style={styles.cardName}>{card.name}</Text>
+                            <Text style={styles.cardInfo}>{card.info}</Text>
+                        </View>
+                    ))}
+                </ScrollView>
+                <View style={styles.helpContainer}>
+                    <Button title="Help" onPress={handleHelp} />
+                </View>
+                <View style={styles.signOutContainer}>
+                    <Button title="Sign Out" onPress={handleSignOut} />
+                </View>
+            </View>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
+    overlay: {
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingHorizontal: 20,
-        position: 'relative',
+        paddingTop: 40, // Adjust top padding to create space for username and title
+        paddingBottom: 20, // Adjust bottom padding for sign out button
     },
-    backgroundImage: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: -1,
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginTop: 20, // Adjust margin top for gap from top boundary
+    },
+    logo: {
+        width: 50, // Adjust as needed
+        height: 50, // Adjust as needed
+        marginRight: 10, // Adjust as needed
     },
     title: {
         fontSize: 24,
-        marginTop: 40,
+        marginTop: 20,
         marginBottom: 20,
         color: '#fff',
         fontWeight: 'bold',
+    },
+    username: {
+        fontSize: 20,
+        color: '#fff',
     },
     cardsContainer: {
         alignItems: 'center',
@@ -120,6 +148,16 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 10,
         textAlign: 'center',
+    },
+    helpContainer: {
+        position: 'absolute',
+        bottom: 20, // Adjust as needed
+        left: 20, // Adjust as needed
+    },
+    signOutContainer: {
+        position: 'absolute',
+        bottom: 20, // Adjust as needed
+        right: 20, // Adjust as needed
     },
 });
 

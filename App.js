@@ -4,6 +4,7 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AnotherWelcomeScreen from './screens/AnotherWelcomeScreen';
 import SignupScreen from './screens/SignupScreen';
+import HelpScreen from './screens/HelpScreen'; // Ensure HelpScreen import is correct and matches file name
 
 const App = () => {
     const [page, setPage] = useState('Welcome');
@@ -39,6 +40,8 @@ const App = () => {
                 return <AnotherWelcomeScreen onSignOut={handleLogout} onNavigate={setPage} />;
             case 'Signup':
                 return <SignupScreen onNavigate={setPage} />;
+            case 'Help':
+                return <HelpScreen onNavigate={setPage} />; // Rendering HelpScreen
             default:
                 return <WelcomeScreen onNavigate={setPage} />;
         }
