@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         width: 100, // Adjust width as needed
         height: 100, // Adjust height as needed
         marginBottom: 20,
+        borderRadius:300,
     },
     title: {
         fontSize: 24,

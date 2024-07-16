@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
     logo: {
         width: 50, // Adjust as needed
         height: 50, // Adjust as needed
-        marginRight: 10, // Adjust as needed
+        marginRight: 10,
+        borderRadius:40, // Adjust as needed
     },
     title: {
         fontSize: 24,
