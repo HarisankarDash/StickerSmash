@@ -4,9 +4,9 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 const WelcomeScreen = ({ onNavigate }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome</Text>
-            <Button title="Login" onPress={() => onNavigate('Login')} />
-            <Button title="Sign Up" onPress={() => onNavigate('Signup')} />
+            <Text style={styles.title}>GET STARTED WITH SHOPSPHERE</Text>
+            <Button title="Already have an account? Login here" onPress={() => onNavigate('Login')} />
+            <Button title="                          GET STARTED!!                            " onPress={() => onNavigate('Signup')} />
         </View>
     );
 };

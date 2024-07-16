@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AnotherWelcomeScreen from './screens/AnotherWelcomeScreen';
-import SignupScreen from './screens/SignUpScreen';
+import SignupScreen from './screens/SignupScreen';
 
 const App = () => {
     const [page, setPage] = useState('Welcome');
@@ -30,7 +30,6 @@ const App = () => {
     };
 
     const renderScreen = () => {
-        
         switch (page) {
             case 'Welcome':
                 return <WelcomeScreen onNavigate={setPage} />;
@@ -39,7 +38,7 @@ const App = () => {
             case 'AnotherWelcome':
                 return <AnotherWelcomeScreen onSignOut={handleLogout} onNavigate={setPage} />;
             case 'Signup':
-                return <SignupScreen onNavigate={setPage}/>
+                return <SignupScreen onNavigate={setPage} />;
             default:
                 return <WelcomeScreen onNavigate={setPage} />;
         }
