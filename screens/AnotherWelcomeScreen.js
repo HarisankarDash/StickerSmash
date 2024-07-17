@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native';
 import HelpScreen from './HelpScreen'; // Ensure HelpScreen import is correct and matches file name
 
 const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
+    const [favorites, setFavorites] = useState([]);
+    const [bookmarks, setBookmarks] = useState([]);
+
     const handleSignOut = () => {
         onSignOut();
     };
 
     const handleHelp = () => {
         onNavigate('Help'); // Ensure this matches the component name in switch case
+    };
+
+    const toggleFavorite = (index) => {
+        if (favorites.includes(index)) {
+            setFavorites(favorites.filter((item) => item !== index));
+        } else {
+            setFavorites([...favorites, index]);
+        }
+    };
+
+    const toggleBookmark = (index) => {
+        if (bookmarks.includes(index)) {
+            setBookmarks(bookmarks.filter((item) => item !== index));
+        } else {
+            setBookmarks([...bookmarks, index]);
+        }
     };
 
     const cards = [
@@ -56,14 +75,14 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
 
     return (
         <ImageBackground 
-            source={require('../assets/img10.jpg')} 
+            source={require('../assets/img12.jpg')} 
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <View style={styles.overlay}>
                 <View style={styles.header}>
                     <Image source={require('../assets/img11.png')} style={styles.logo} />
-                    <Text style={styles.username}>EXPLORE {username}</Text>
+                    <Text style={styles.username}>EXPLORE{username}</Text>
                 </View>
                 <Text style={styles.title}>PICK 2 GET 1 FREE!!</Text>
                 <ScrollView contentContainerStyle={styles.cardsContainer}>
@@ -72,6 +91,14 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
                             <Image source={card.image} style={styles.cardImage} />
                             <Text style={styles.cardName}>{card.name}</Text>
                             <Text style={styles.cardInfo}>{card.info}</Text>
+                            <View style={styles.buttonContainer}>
+                                
+                                <Button
+                                    title="🔖" // Bookmark icon
+                                    color={bookmarks.includes(index) ? 'blue' : 'transparent'}
+                                    onPress={() => toggleBookmark(index)}
+                                />
+                            </View>
                         </View>
                     ))}
                 </ScrollView>
@@ -110,7 +137,7 @@ const styles = StyleSheet.create({
         width: 50, // Adjust as needed
         height: 50, // Adjust as needed
         marginRight: 10,
-        borderRadius:40, // Adjust as needed
+         // Adjust as needed
     },
     title: {
         fontSize: 24,
@@ -150,6 +177,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         textAlign: 'center',
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: 10,
+    },
     helpContainer: {
         position: 'absolute',
         bottom: 20, // Adjust as needed
@@ -163,3 +196,4 @@ const styles = StyleSheet.create({
 });
 
 export default AnotherWelcomeScreen;
+

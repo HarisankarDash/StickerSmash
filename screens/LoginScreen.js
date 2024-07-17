@@ -11,7 +11,7 @@ const LoginScreen = ({ onLogin, onNavigate }) => {
 
     return (
         <ImageBackground 
-            source={require('../assets/img10.jpg')} 
+            source={require('../assets/img12.jpg')} 
             style={styles.backgroundImage}
             resizeMode="cover"
         >
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         height: 100, // Adjust height as needed
         marginBottom: 20,
         opacity: 0.8, 
-        borderRadius: 300,// Adjust opacity for transparency
+        // Adjust opacity for transparency
     },
     title: {
         fontSize: 24,
