@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, StyleSheet, ImageBackground, Image } from 'react-native';
 
 const WelcomeScreen = ({ onNavigate }) => {
     return (
@@ -11,17 +11,17 @@ const WelcomeScreen = ({ onNavigate }) => {
             <View style={styles.overlay}>
                 <View style={styles.transparentBox}>
                     <Image 
-                        source={require('../assets/img11.png')} // Ensure this path is correct
+                        source={require('../assets/img14.png')} // Ensure this path is correct
                         style={styles.logo}
                         resizeMode="contain" // Adjust this to fit the logo appropriately
                     />
                     <Text style={styles.title}>GET STARTED WITH SHOPSPHERE</Text>
-                    <View style={styles.buttonContainer}>
-                        <Button title="Already have an account? Login here" onPress={() => onNavigate('Login')} />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button title="GET STARTED!!" onPress={() => onNavigate('Signup')} />
-                    </View>
+                    <Pressable style={styles.button} onPress={() => onNavigate('Login')}>
+                        <Text style={styles.buttonText}>Already have an account? Login here</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={() => onNavigate('Signup')}>
+                        <Text style={styles.buttonText}>GET STARTED</Text>
+                    </Pressable>
                 </View>
             </View>
         </ImageBackground>
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
         width: 100, // Adjust width as needed
         height: 100, // Adjust height as needed
         marginBottom: 20,
-        
     },
     title: {
         fontSize: 24,
@@ -59,9 +58,18 @@ const styles = StyleSheet.create({
         color: 'black', // Text color for visibility
         textAlign: 'center', // Center align the text
     },
-    buttonContainer: {
+    button: {
         marginVertical: 10, // Add vertical margin to separate buttons
         width: '100%', // Ensure buttons take up the full width of the transparent box
+        paddingVertical: 15, // Adjust padding for button height
+        backgroundColor: '#4B0082', // Violet background color
+        borderRadius: 10, // Rounded corners
+        alignItems: 'center', // Center align the button text
+    },
+    buttonText: {
+        color: 'white', // White text color for better contrast
+        fontSize: 16, // Adjust font size as needed
+        fontWeight: 'bold', // Bold text for emphasis
     },
 });
 

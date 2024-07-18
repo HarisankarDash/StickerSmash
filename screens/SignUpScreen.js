@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, Pressable, TextInput, StyleSheet, ImageBackground, Image } from 'react-native';
 
 const SignupScreen = ({ onNavigate }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showError, setShowError] = useState(false); // State to manage error display
 
     const handleSignup = () => {
         if (password === confirmPassword) {
@@ -13,7 +14,7 @@ const SignupScreen = ({ onNavigate }) => {
             // After successful signup, navigate to Login page
             onNavigate('Login');
         } else {
-            alert('Passwords do not match');
+            setShowError(true); // Display error message
         }
     };
 
@@ -26,7 +27,7 @@ const SignupScreen = ({ onNavigate }) => {
             <View style={styles.overlay}>
                 <View style={styles.container}>
                     <Image 
-                        source={require('../assets/img11.png')} // Adjust this path as per your logo
+                        source={require('../assets/img14.png')} // Adjust this path as per your logo
                         style={styles.logo}
                         resizeMode="contain"
                     />
@@ -51,9 +52,22 @@ const SignupScreen = ({ onNavigate }) => {
                         value={confirmPassword} 
                         onChangeText={setConfirmPassword} 
                     />
+                    {showError && (
+                        <View style={styles.errorContainer}>
+                            <Image 
+                                source={require('../assets/img15.png')} // Placeholder for error icon
+                                style={styles.errorIcon}
+                            />
+                            <Text style={styles.errorText}>Passwords do not match</Text>
+                        </View>
+                    )}
                     <View style={styles.buttonContainer}>
-                        <Button title="Sign Up" style={styles.button} onPress={handleSignup} />
-                        <Button title="Back to Welcome" style={styles.button} onPress={() => onNavigate('Welcome')} />
+                        <Pressable style={styles.button} onPress={handleSignup}>
+                            <Text style={styles.buttonText}>Sign Up</Text>
+                        </Pressable>
+                        <Pressable style={styles.button} onPress={() => onNavigate('Welcome')}>
+                            <Text style={styles.buttonText}>Back to Welcome</Text>
+                        </Pressable>
                     </View>
                 </View>
             </View>
@@ -91,8 +105,7 @@ const styles = StyleSheet.create({
         width: 100, // Adjust width as needed
         height: 100, // Adjust height as needed
         marginBottom: 20,
-        opacity: 0.8,
-         // Adjust opacity for transparency
+        opacity: 0.8, // Adjust opacity for transparency
     },
     title: {
         fontSize: 24,
@@ -117,6 +130,29 @@ const styles = StyleSheet.create({
     },
     button: {
         marginBottom: 10,
+        paddingVertical: 15, // Adjust padding for button height
+        backgroundColor: '#4B0082', // Dark purple background color
+        borderRadius: 10, // Rounded corners
+        alignItems: 'center', // Center align the button text
+    },
+    buttonText: {
+        color: 'white', // White text color for better contrast
+        fontSize: 16, // Adjust font size as needed
+        fontWeight: 'bold', // Bold text for emphasis
+    },
+    errorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    errorIcon: {
+        width: 20,
+        height: 20,
+        marginRight: 10,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 16,
     },
 });
 

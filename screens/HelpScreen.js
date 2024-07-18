@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 
 const HelpScreen = ({ onNavigate }) => {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -33,14 +33,14 @@ We accept major credit cards (Visa, MasterCard, American Express), PayPal, and o
 For information on returns or exchanges, please visit our Returns & Exchanges Policy page for detailed instructions. You can also contact our customer support team for assistance.</Text>
                 {/* Add your help content here */}
             </View>
-            <TouchableOpacity style={[styles.backButton, { left: screenWidth * 0.05 }]} onPress={handleGoBack}>
+            <Pressable style={[styles.backButton, { left: screenWidth * 0.05 }]} onPress={handleGoBack}>
                 <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.themeButton, { right: screenWidth * 0.05 }]} onPress={toggleTheme}>
+            </Pressable>
+            <Pressable style={[styles.themeButton, { right: screenWidth * 0.05 }]} onPress={toggleTheme}>
                 <Text style={styles.themeButtonText}>
                     {isDarkTheme ? 'Light Theme' : 'Dark Theme'}
                 </Text>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 };
@@ -93,3 +93,4 @@ const styles = StyleSheet.create({
 });
 
 export default HelpScreen;
+

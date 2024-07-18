@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ImageBackground, Image } from 'react-native';
+import logoImage from '../assets/img14.png'; // Replace with your logo image path
 
 const LoginScreen = ({ onLogin, onNavigate }) => {
     const [email, setEmail] = React.useState('');
@@ -18,7 +19,7 @@ const LoginScreen = ({ onLogin, onNavigate }) => {
             <View style={styles.overlay}>
                 <View style={styles.container}>
                     <Image 
-                        source={require('../assets/img11.png')} // Adjust this path as per your logo
+                        source={logoImage} // Replace with your logo image
                         style={styles.logo}
                         resizeMode="contain"
                     />
@@ -37,8 +38,12 @@ const LoginScreen = ({ onLogin, onNavigate }) => {
                         onChangeText={newText => setPassword(newText)}
                     />
                     <View style={styles.buttonContainer}>
-                        <Button title="Login" onPress={handleLogin} />
-                        <Button title="Back to Welcome" onPress={() => onNavigate('Welcome')} />
+                        <View style={styles.button}>
+                            <Button title="Login" color="#6A0DAD" onPress={handleLogin} />
+                        </View>
+                        <View style={styles.button}>
+                            <Button title="Back to Welcome" color="#6A0DAD" onPress={() => onNavigate('Welcome')} />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -97,6 +102,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 10,
         width: '100%',
+    },
+    button: {
+        width: '100%',
+        borderRadius: 5,
     },
 });
 

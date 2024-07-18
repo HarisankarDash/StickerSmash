@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image } fr
 import HelpScreen from './HelpScreen'; // Ensure HelpScreen import is correct and matches file name
 
 const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
-    const [favorites, setFavorites] = useState([]);
+    
     const [bookmarks, setBookmarks] = useState([]);
 
     const handleSignOut = () => {
