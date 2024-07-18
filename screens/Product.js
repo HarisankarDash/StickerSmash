@@ -26,6 +26,11 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
             image: require('../assets/img2.jpg'),
         },
         {
+            name: 'GRAY-NICOLLS GOLD EDITION - BATTING PADS',
+            info: 'MRP₹4,495',
+            image: require('../assets/img3.jpg'),
+        },
+        {
             name: 'Navy Blue SHREY Masterclass Air 2.0 Stainless Steel Cricket Helmet, Size: Standard',
             info: 'MRP₹10,495',
             image: require('../assets/img4.jpg'),
