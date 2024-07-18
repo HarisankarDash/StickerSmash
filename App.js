@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
-import AnotherWelcomeScreen from './screens/AnotherWelcomeScreen';
+import AnotherWelcomeScreen from './screens/Product';
 import SignupScreen from './screens/SignupScreen';
-import HelpScreen from './screens/HelpScreen'; // Ensure HelpScreen import is correct and matches file name
+import HelpScreen from './screens/HelpScreen';
+import FavoritesScreen from './screens/Favorite';
+import { FavoritesProvider } from './screens/FavoritesContext'; // Ensure this matches your context file
 
 const App = () => {
     const [page, setPage] = useState('Welcome');
@@ -14,7 +16,7 @@ const App = () => {
         // Check if the entered credentials are correct
         if (email === 'hari@123' && password === '1234') {
             setIsLoggedIn(true);
-            setPage('AnotherWelcome');
+            setPage('Product'); // Navigate to Product screen after successful login
         } else {
             alert('Invalid credentials. Please try again.');
         }
@@ -22,12 +24,7 @@ const App = () => {
 
     const handleLogout = () => {
         setIsLoggedIn(false);
-        setPage('Welcome');
-    };
-
-    const unnavigate = () => {
-        // Implement logic to unnavigate or reset state
-        setPage('Welcome'); // For example, resetting to WelcomeScreen
+        setPage('Welcome'); // Navigate to Welcome screen after logout
     };
 
     const renderScreen = () => {
@@ -36,21 +33,25 @@ const App = () => {
                 return <WelcomeScreen onNavigate={setPage} />;
             case 'Login':
                 return <LoginScreen onLogin={handleLogin} onNavigate={setPage} />;
-            case 'AnotherWelcome':
+            case 'Product':
                 return <AnotherWelcomeScreen onSignOut={handleLogout} onNavigate={setPage} />;
             case 'Signup':
                 return <SignupScreen onNavigate={setPage} />;
             case 'Help':
                 return <HelpScreen onNavigate={setPage} />; // Rendering HelpScreen
+            case 'Favorites':
+                return <FavoritesScreen onNavigate={setPage} />;
             default:
                 return <WelcomeScreen onNavigate={setPage} />;
         }
     };
 
     return (
-        <View style={styles.container}>
-            {renderScreen()}
-        </View>
+        <FavoritesProvider>
+            <View style={styles.container}>
+                {renderScreen()}
+            </View>
+        </FavoritesProvider>
     );
 };
 

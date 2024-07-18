@@ -1,33 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native';
-import HelpScreen from './HelpScreen'; // Ensure HelpScreen import is correct and matches file name
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useFavorites } from './FavoritesContext';
 
-const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
-    
-    const [bookmarks, setBookmarks] = useState([]);
+const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
+    const { favorites, toggleFavorite } = useFavorites();
 
-    const handleSignOut = () => {
-        onSignOut();
+    const handleFavorites = () => {
+        onNavigate('Favorites');
     };
 
     const handleHelp = () => {
-        onNavigate('Help'); // Ensure this matches the component name in switch case
-    };
-
-    const toggleFavorite = (index) => {
-        if (favorites.includes(index)) {
-            setFavorites(favorites.filter((item) => item !== index));
-        } else {
-            setFavorites([...favorites, index]);
-        }
-    };
-
-    const toggleBookmark = (index) => {
-        if (bookmarks.includes(index)) {
-            setBookmarks(bookmarks.filter((item) => item !== index));
-        } else {
-            setBookmarks([...bookmarks, index]);
-        }
+        onNavigate('Help');
     };
 
     const cards = [
@@ -40,11 +24,6 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
             name: 'SS Sky MS English Willow Cricket Bat SH',
             info: 'MRP₹17,495',
             image: require('../assets/img2.jpg'),
-        },
-        {
-            name: 'GRAY-NICOLLS GOLD EDITION - BATTING PADS',
-            info: 'MRP₹6,495',
-            image: require('../assets/img3.jpg'),
         },
         {
             name: 'Navy Blue SHREY Masterclass Air 2.0 Stainless Steel Cricket Helmet, Size: Standard',
@@ -71,6 +50,7 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
             info: 'MRP₹1,002',
             image: require('../assets/img8.jpg'),
         },
+        // Add more card objects as needed
     ];
 
     return (
@@ -80,11 +60,10 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
             resizeMode="cover"
         >
             <View style={styles.overlay}>
-                <View style={styles.header}>
-                    <Image source={require('../assets/img11.png')} style={styles.logo} />
-                    <Text style={styles.username}>EXPLORE{username}</Text>
+                <View style={styles.topContainer}>
+                    <Button title="Help" onPress={handleHelp} />
+                    <Button title="Favorites" onPress={handleFavorites} />
                 </View>
-                <Text style={styles.title}>PICK 2 GET 1 FREE!!</Text>
                 <ScrollView contentContainerStyle={styles.cardsContainer}>
                     {cards.map((card, index) => (
                         <View key={index} style={styles.card}>
@@ -92,21 +71,18 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate, username }) => {
                             <Text style={styles.cardName}>{card.name}</Text>
                             <Text style={styles.cardInfo}>{card.info}</Text>
                             <View style={styles.buttonContainer}>
-                                
-                                <Button
-                                    title="🔖" // Bookmark icon
-                                    color={bookmarks.includes(index) ? 'blue' : 'transparent'}
-                                    onPress={() => toggleBookmark(index)}
+                                <Icon
+                                    name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
+                                    size={30}
+                                    color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
+                                    onPress={() => toggleFavorite(card)}
                                 />
                             </View>
                         </View>
                     ))}
                 </ScrollView>
-                <View style={styles.helpContainer}>
-                    <Button title="Help" onPress={handleHelp} />
-                </View>
                 <View style={styles.signOutContainer}>
-                    <Button title="Sign Out" onPress={handleSignOut} />
+                    <Button title="Sign Out" onPress={onSignOut} />
                 </View>
             </View>
         </ImageBackground>
@@ -124,31 +100,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingTop: 40, // Adjust top padding to create space for username and title
-        paddingBottom: 20, // Adjust bottom padding for sign out button
+        paddingTop: 40,
+        paddingBottom: 20,
     },
-    header: {
+    topContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-        marginTop: 20, // Adjust margin top for gap from top boundary
-    },
-    logo: {
-        width: 50, // Adjust as needed
-        height: 50, // Adjust as needed
-        marginRight: 10,
-         // Adjust as needed
-    },
-    title: {
-        fontSize: 24,
-        marginTop: 20,
-        marginBottom: 20,
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    username: {
-        fontSize: 20,
-        color: '#fff',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 10,
     },
     cardsContainer: {
         alignItems: 'center',
@@ -183,15 +142,10 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 10,
     },
-    helpContainer: {
-        position: 'absolute',
-        bottom: 20, // Adjust as needed
-        left: 20, // Adjust as needed
-    },
     signOutContainer: {
         position: 'absolute',
-        bottom: 20, // Adjust as needed
-        right: 20, // Adjust as needed
+        bottom: 20,
+        right: 20,
     },
 });
 

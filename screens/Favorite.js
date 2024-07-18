@@ -1,31 +1,54 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, Image, Button } from 'react-native';
+import { useFavorites } from './FavoritesContext';
 
-const Favorite = ({ card, index, bookmarks, toggleBookmark }) => {
+const Favorite = ({ onNavigate }) => {
+    const { favorites, toggleFavorite } = useFavorites();
+
     return (
-        <View key={index} style={styles.card}>
-            <Image source={card.image} style={styles.cardImage} />
-            <Text style={styles.cardName}>{card.name}</Text>
-            <Text style={styles.cardInfo}>{card.info}</Text>
-            <View style={styles.buttonContainer}>
-                <Button
-                    title="🔖" // Bookmark icon
-                    color={bookmarks.includes(index) ? 'blue' : 'transparent'}
-                    onPress={() => toggleBookmark(index)}
-                />
+        <View style={styles.container}>
+            <FlatList
+                data={favorites}
+                renderItem={({ item }) => (
+                    <View style={styles.card}>
+                        <Image source={item.image} style={styles.cardImage} />
+                        <Text style={styles.cardName}>{item.name}</Text>
+                        <Text style={styles.cardInfo}>{item.info}</Text>
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                title="Remove from Favorites"
+                                onPress={() => toggleFavorite(item)}
+                                color="red"
+                            />
+                        </View>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={styles.cardsContainer}
+            />
+            <View style={styles.backButtonContainer}>
+                <Button title="Back to Products" onPress={() => onNavigate('Product')} />
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    cardsContainer: {
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+    },
     card: {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         borderRadius: 10,
         padding: 10,
         marginBottom: 20,
         alignItems: 'center',
-        width: '90%',
+        width: '100%',
     },
     cardImage: {
         width: 150,
@@ -43,10 +66,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
         marginTop: 10,
+    },
+    backButtonContainer: {
+        padding: 20,
+        alignItems: 'center',
     },
 });
 
