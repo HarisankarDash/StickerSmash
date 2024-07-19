@@ -9,7 +9,7 @@ const HelpScreen = ({ onNavigate }) => {
     };
 
     const handleGoBack = () => {
-        onNavigate('AnotherWelcome'); // Navigate back to AnotherWelcomeScreen
+        onNavigate('Product'); // Navigate back to AnotherWelcomeScreen
     };
 
     const screenWidth = Dimensions.get('window').width;

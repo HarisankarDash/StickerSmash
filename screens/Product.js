@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFavorites } from './FavoritesContext';
 
@@ -66,8 +66,12 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
         >
             <View style={styles.overlay}>
                 <View style={styles.topContainer}>
-                    <Button title="Help" onPress={handleHelp} />
-                    <Button title="Favorites" onPress={handleFavorites} />
+                    <Pressable style={styles.button} onPress={handleHelp}>
+                        <Text style={styles.buttonText}>Help</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={handleFavorites}>
+                        <Text style={styles.buttonText}>Favorites ({favorites.length})</Text>
+                    </Pressable>
                 </View>
                 <ScrollView contentContainerStyle={styles.cardsContainer}>
                     {cards.map((card, index) => (
@@ -76,18 +80,21 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
                             <Text style={styles.cardName}>{card.name}</Text>
                             <Text style={styles.cardInfo}>{card.info}</Text>
                             <View style={styles.buttonContainer}>
-                                <Icon
-                                    name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
-                                    size={30}
-                                    color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
-                                    onPress={() => toggleFavorite(card)}
-                                />
+                                <Pressable onPress={() => toggleFavorite(card)}>
+                                    <Icon
+                                        name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
+                                        size={30}
+                                        color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
+                                    />
+                                </Pressable>
                             </View>
                         </View>
                     ))}
                 </ScrollView>
                 <View style={styles.signOutContainer}>
-                    <Button title="Sign Out" onPress={onSignOut} />
+                    <Pressable style={styles.button} onPress={onSignOut}>
+                        <Text style={styles.buttonText}>Sign Out</Text>
+                    </Pressable>
                 </View>
             </View>
         </ImageBackground>
@@ -113,6 +120,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginTop: 10,
+    },
+    button: {
+        backgroundColor: '#4B0082', // Dark purple color
+        padding: 10,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
     },
     cardsContainer: {
         alignItems: 'center',
@@ -147,6 +163,10 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 10,
     },
+    favoriteIcon: {
+        width: 30,
+        height: 30,
+    },
     signOutContainer: {
         position: 'absolute',
         bottom: 20,
@@ -155,4 +175,3 @@ const styles = StyleSheet.create({
 });
 
 export default AnotherWelcomeScreen;
-
