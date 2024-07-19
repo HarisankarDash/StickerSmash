@@ -1,17 +1,25 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, ScrollView, Image, Pressable } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFavorites } from './FavoritesContext';
+
+const logoImage = require('../assets/img14.png');
 
 const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     const { favorites, toggleFavorite } = useFavorites();
 
+    const favoriteCount = useMemo(() => favorites.length, [favorites]);
+
     const handleFavorites = () => {
-        onNavigate('Favorites');
+        onNavigate('Favorites'); // Navigate to Favorites screen
     };
 
     const handleHelp = () => {
         onNavigate('Help');
+    };
+
+    const handleSignOut = () => {
+        onNavigate('Welcome'); // Navigate to Welcome screen after sign out
     };
 
     const cards = [
@@ -65,13 +73,9 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
             resizeMode="cover"
         >
             <View style={styles.overlay}>
-                <View style={styles.topContainer}>
-                    <Pressable style={styles.button} onPress={handleHelp}>
-                        <Text style={styles.buttonText}>Help</Text>
-                    </Pressable>
-                    <Pressable style={styles.button} onPress={handleFavorites}>
-                        <Text style={styles.buttonText}>Favorites ({favorites.length})</Text>
-                    </Pressable>
+                <View style={styles.header}>
+                    <Image source={logoImage} style={styles.logo} />
+                    <Text style={styles.welcomeText}>Welcome to SHOPSPHERE</Text>
                 </View>
                 <ScrollView contentContainerStyle={styles.cardsContainer}>
                     {cards.map((card, index) => (
@@ -91,9 +95,23 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
                         </View>
                     ))}
                 </ScrollView>
-                <View style={styles.signOutContainer}>
-                    <Pressable style={styles.button} onPress={onSignOut}>
-                        <Text style={styles.buttonText}>Sign Out</Text>
+                <View style={styles.navigationBar}>
+                    <Pressable style={styles.navButton} onPress={handleHelp}>
+                        <Icon name="question-circle" size={30} color="#fff" />
+                        <Text style={styles.navText}>Help</Text>
+                    </Pressable>
+                    <Pressable style={styles.navButton} onPress={handleFavorites}>
+                        <Icon name="star" size={30} color="#fff" />
+                        {favoriteCount > 0 && (
+                            <View style={styles.badge}>
+                                <Text style={styles.badgeText}>{favoriteCount}</Text>
+                            </View>
+                        )}
+                        <Text style={styles.navText}>Favorites</Text>
+                    </Pressable>
+                    <Pressable style={styles.navButton} onPress={handleSignOut}>
+                        <Icon name="sign-out" size={30} color="#fff" />
+                        <Text style={styles.navText}>Sign Out</Text>
                     </Pressable>
                 </View>
             </View>
@@ -115,20 +133,20 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 20,
     },
-    topContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: 10,
+    header: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
     },
-    button: {
-        backgroundColor: '#4B0082', // Dark purple color
-        padding: 10,
-        borderRadius: 5,
+    logo: {
+        width: 100,
+        height: 100,
+        marginBottom: 10,
     },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
+    welcomeText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'purple',
     },
     cardsContainer: {
         alignItems: 'center',
@@ -162,15 +180,42 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
         marginTop: 10,
+        position: 'relative', // Ensure the badge is positioned relative to its parent
     },
-    favoriteIcon: {
-        width: 30,
-        height: 30,
-    },
-    signOutContainer: {
+    badge: {
         position: 'absolute',
-        bottom: 20,
-        right: 20,
+        top: -8,
+        right: -8,
+        backgroundColor: 'red',
+        borderRadius: 10,
+        minWidth: 20,
+        paddingVertical: 2,
+        paddingHorizontal: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    badgeText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    navigationBar: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 60,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    navButton: {
+        alignItems: 'center',
+    },
+    navText: {
+        color: '#fff',
+        fontSize: 12,
     },
 });
 

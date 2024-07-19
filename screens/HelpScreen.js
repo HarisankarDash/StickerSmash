@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'; // You can use any icon library you prefer
 
 const HelpScreen = ({ onNavigate }) => {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -9,7 +10,7 @@ const HelpScreen = ({ onNavigate }) => {
     };
 
     const handleGoBack = () => {
-        onNavigate('Product'); // Navigate back to AnotherWelcomeScreen
+        onNavigate('Product'); // Navigate back to Product screen
     };
 
     const screenWidth = Dimensions.get('window').width;
@@ -33,14 +34,14 @@ We accept major credit cards (Visa, MasterCard, American Express), PayPal, and o
 For information on returns or exchanges, please visit our Returns & Exchanges Policy page for detailed instructions. You can also contact our customer support team for assistance.</Text>
                 {/* Add your help content here */}
             </View>
-            <Pressable style={[styles.backButton, { left: screenWidth * 0.05 }]} onPress={handleGoBack}>
-                <Text style={styles.backButtonText}>Back</Text>
-            </Pressable>
-            <Pressable style={[styles.themeButton, { right: screenWidth * 0.05 }]} onPress={toggleTheme}>
-                <Text style={styles.themeButtonText}>
-                    {isDarkTheme ? 'Light Theme' : 'Dark Theme'}
-                </Text>
-            </Pressable>
+            <View style={styles.navBar}>
+                <Pressable style={styles.navButton} onPress={handleGoBack}>
+                    <Icon name="arrow-left" size={20} color="#fff" />
+                </Pressable>
+                <Pressable style={styles.navButton} onPress={toggleTheme}>
+                    <Icon name={isDarkTheme ? 'sun-o' : 'moon-o'} size={20} color="#fff" />
+                </Pressable>
+            </View>
         </View>
     );
 };
@@ -48,49 +49,37 @@ For information on returns or exchanges, please visit our Returns & Exchanges Po
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#fff', // Default light theme background
     },
     darkContainer: {
         backgroundColor: '#000',
-        width : "100%" // Dark theme background
+        width:'100%' // Dark theme background
+    },
+    navBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent background
+        position: 'absolute',
+        bottom: 0, // Position it at the bottom
+        width: '100%',
+    },
+    navButton: {
+        padding: 10,
+    },
+    helpText: {
+        color: '#FFD700', // Yellow color
+        fontSize: 18,
     },
     content: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingBottom: 20,
-    },
-    helpText: {
-        color: '#FFD700', // yellow color
-        fontSize: 18,
-    },
-    backButton: {
-        position: 'absolute',
-        top: 20, // Adjust the top distance from the top edge
-        backgroundColor: '#007AFF', // Adjust button color as needed
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-    },
-    backButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    themeButton: {
-        position: 'absolute',
-        bottom: 20, // Adjust the bottom distance from the bottom edge
-        backgroundColor: '#FFD700',
-        padding: 10,
-        borderRadius: 5,
-    },
-    themeButtonText: {
-        color: '#000',
-        fontWeight: 'bold',
+        paddingBottom: 60, // Space for the navigation bar
     },
 });
 
 export default HelpScreen;
-
