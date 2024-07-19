@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFavorites } from './FavoritesContext';
 
@@ -7,6 +7,8 @@ const logoImage = require('../assets/img14.png');
 
 const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     const { favorites, toggleFavorite } = useFavorites();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredCards, setFilteredCards] = useState([]);
 
     const favoriteCount = useMemo(() => favorites.length, [favorites]);
 
@@ -22,8 +24,8 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
         onNavigate('Welcome'); // Navigate to Welcome screen after sign out
     };
 
+    // Sample data for cards
     const cards = [
-        
         {
             name: 'Sony WH-CH520, Wireless On-Ear Bluetooth Headphones with Mic',
             info: 'MRP ₹3,989',
@@ -49,9 +51,20 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
             info: 'From $289.99',
             image: require('../assets/img6.jpg'),
         },
-       
         // Add more card objects as needed
     ];
+
+    // Initialize filteredCards with all products initially
+    useState(() => {
+        setFilteredCards(cards);
+    }, []);
+
+    // Function to update filtered cards based on search query
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        const filtered = cards.filter(card => card.name.toLowerCase().includes(query.toLowerCase()));
+        setFilteredCards(filtered);
+    };
 
     return (
         <ImageBackground 
@@ -64,8 +77,15 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
                     <Image source={logoImage} style={styles.logo} />
                     <Text style={styles.welcomeText}>Welcome to SHOPSPHERE</Text>
                 </View>
+                {/* Search bar */}
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChangeText={handleSearch}
+                />
                 <ScrollView contentContainerStyle={styles.cardsContainer}>
-                    {cards.map((card, index) => (
+                    {filteredCards.map((card, index) => (
                         <View key={index} style={styles.card}>
                             <Image source={card.image} style={styles.cardImage} />
                             <Text style={styles.cardName}>{card.name}</Text>
@@ -81,6 +101,9 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
                             </View>
                         </View>
                     ))}
+                    {filteredCards.length === 0 && (
+                        <Text style={styles.noResultsText}>No results found</Text>
+                    )}
                 </ScrollView>
                 <View style={styles.navigationBar}>
                     <Pressable style={styles.navButton} onPress={handleHelp}>
@@ -134,6 +157,13 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: 'purple',
+    },
+    searchInput: {
+        backgroundColor: '#fff',
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 10,
+        width: '90%',
     },
     cardsContainer: {
         alignItems: 'center',
@@ -203,6 +233,12 @@ const styles = StyleSheet.create({
     navText: {
         color: '#fff',
         fontSize: 12,
+    },
+    noResultsText: {
+        fontSize: 18,
+        marginTop: 20,
+        color: 'gray',
+        textAlign: 'center',
     },
 });
 
