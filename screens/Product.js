@@ -23,52 +23,39 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     };
 
     const cards = [
+        
         {
-            name: 'Nike Domain 2 Cricket Shoes - Steel Spikes',
-            info: 'MRP₹10,495',
+            name: 'Sony WH-CH520, Wireless On-Ear Bluetooth Headphones with Mic',
+            info: 'MRP ₹3,989',
             image: require('../assets/img1.jpg'),
         },
         {
-            name: 'SS Sky MS English Willow Cricket Bat SH',
-            info: 'MRP₹17,495',
-            image: require('../assets/img2.jpg'),
-        },
-        {
-            name: 'GRAY-NICOLLS GOLD EDITION - BATTING PADS',
-            info: 'MRP₹4,495',
+            name: 'Apple Watch SE (2nd Gen)',
+            info: '$159.99',
             image: require('../assets/img3.jpg'),
         },
         {
-            name: 'Navy Blue SHREY Masterclass Air 2.0 Stainless Steel Cricket Helmet, Size: Standard',
-            info: 'MRP₹10,495',
+            name: 'Nike SB Dunk Low White and Gum Light Brown NEW - Size 10 Mens US - White Black',
+            info: '$220',
             image: require('../assets/img4.jpg'),
         },
         {
-            name: 'BAS Batting Gloves',
-            info: 'MRP₹3,495',
+            name: 'Apple AirPods Pro IPRIME revendedora Apple Tel:(11) 99298-9047',
+            info: 'MRP₹30,495',
             image: require('../assets/img5.jpg'),
         },
         {
-            name: 'Passion Cricket Sunglass',
-            info: 'MRP₹3,002',
+            name: 'Google Pixel Watch 2',
+            info: 'From $289.99',
             image: require('../assets/img6.jpg'),
         },
-        {
-            name: 'FORTRESS CLUB CROWN CRIC',
-            info: 'MRP₹2,002',
-            image: require('../assets/img7.jpg'),
-        },
-        {
-            name: 'SAREEN SPORTS Cricket Panama Hat; Multi-color',
-            info: 'MRP₹1,002',
-            image: require('../assets/img8.jpg'),
-        },
+       
         // Add more card objects as needed
     ];
 
     return (
         <ImageBackground 
-            source={require('../assets/img12.jpg')} 
+            source={require('../assets/img44.jpg')} 
             style={styles.backgroundImage}
             resizeMode="cover"
         >

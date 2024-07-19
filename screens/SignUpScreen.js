@@ -20,7 +20,7 @@ const SignupScreen = ({ onNavigate }) => {
 
     return (
         <ImageBackground 
-            source={require('../assets/img10.jpg')} 
+            source={require('../assets/img12.jpg')} 
             style={styles.backgroundImage}
             resizeMode="cover"
         >
@@ -65,7 +65,7 @@ const SignupScreen = ({ onNavigate }) => {
                         <Pressable style={styles.button} onPress={handleSignup}>
                             <Text style={styles.buttonText}>Sign Up</Text>
                         </Pressable>
-                        <Pressable style={styles.button} onPress={() => onNavigate('Product')}>
+                        <Pressable style={styles.button} onPress={() => onNavigate('WelcomeScreen')}>
                             <Text style={styles.buttonText}>Back to Welcome</Text>
                         </Pressable>
                     </View>
