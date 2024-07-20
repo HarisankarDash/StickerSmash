@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFavorites } from './FavoritesContext';
 
@@ -9,6 +9,7 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     const { favorites, toggleFavorite } = useFavorites();
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredCards, setFilteredCards] = useState([]);
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const favoriteCount = useMemo(() => favorites.length, [favorites]);
 
@@ -22,6 +23,18 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
 
     const handleSignOut = () => {
         onNavigate('Welcome'); // Navigate to Welcome screen after sign out
+    };
+
+    const toggleSearchBar = () => {
+        setIsSearchVisible(!isSearchVisible);
+    };
+
+    const handleScreenPress = () => {
+        if (isSearchVisible) {
+            setIsSearchVisible(false);
+            setSearchQuery('');
+            setFilteredCards(cards);
+        }
     };
 
     // Sample data for cards
@@ -67,65 +80,73 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     };
 
     return (
-        <ImageBackground 
-            source={require('../assets/img44.jpg')} 
-            style={styles.backgroundImage}
-            resizeMode="cover"
-        >
-            <View style={styles.overlay}>
-                <View style={styles.header}>
-                    <Image source={logoImage} style={styles.logo} />
-                    <Text style={styles.welcomeText}>Welcome to SHOPSPHERE</Text>
-                </View>
-                {/* Search bar */}
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChangeText={handleSearch}
-                />
-                <ScrollView contentContainerStyle={styles.cardsContainer}>
-                    {filteredCards.map((card, index) => (
-                        <View key={index} style={styles.card}>
-                            <Image source={card.image} style={styles.cardImage} />
-                            <Text style={styles.cardName}>{card.name}</Text>
-                            <Text style={styles.cardInfo}>{card.info}</Text>
-                            <View style={styles.buttonContainer}>
-                                <Pressable onPress={() => toggleFavorite(card)}>
-                                    <Icon
-                                        name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
-                                        size={30}
-                                        color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
-                                    />
-                                </Pressable>
-                            </View>
-                        </View>
-                    ))}
-                    {filteredCards.length === 0 && (
-                        <Text style={styles.noResultsText}>No results found</Text>
+        <TouchableWithoutFeedback onPress={handleScreenPress}>
+            <ImageBackground 
+                source={require('../assets/img44.jpg')} 
+                style={styles.backgroundImage}
+                resizeMode="cover"
+            >
+                <View style={styles.overlay}>
+                    <View style={styles.header}>
+                        <Image source={logoImage} style={styles.logo} />
+                        <Text style={styles.welcomeText}>Welcome to SHOPSPHERE</Text>
+                    </View>
+                    {isSearchVisible && (
+                        <TextInput
+                            style={styles.searchInput}
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChangeText={handleSearch}
+                            autoFocus={true}
+                        />
                     )}
-                </ScrollView>
-                <View style={styles.navigationBar}>
-                    <Pressable style={styles.navButton} onPress={handleHelp}>
-                        <Icon name="question-circle" size={30} color="#fff" />
-                        <Text style={styles.navText}>Help</Text>
-                    </Pressable>
-                    <Pressable style={styles.navButton} onPress={handleFavorites}>
-                        <Icon name="star" size={30} color="#fff" />
-                        {favoriteCount > 0 && (
-                            <View style={styles.badge}>
-                                <Text style={styles.badgeText}>{favoriteCount}</Text>
+                    <ScrollView contentContainerStyle={styles.cardsContainer}>
+                        {filteredCards.map((card, index) => (
+                            <View key={index} style={styles.card}>
+                                <Image source={card.image} style={styles.cardImage} />
+                                <Text style={styles.cardName}>{card.name}</Text>
+                                <Text style={styles.cardInfo}>{card.info}</Text>
+                                <View style={styles.buttonContainer}>
+                                    <Pressable onPress={() => toggleFavorite(card)}>
+                                        <Icon
+                                            name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
+                                            size={30}
+                                            color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
+                                        />
+                                    </Pressable>
+                                </View>
                             </View>
+                        ))}
+                        {filteredCards.length === 0 && (
+                            <Text style={styles.noResultsText}>No results found</Text>
                         )}
-                        <Text style={styles.navText}>Favorites</Text>
-                    </Pressable>
-                    <Pressable style={styles.navButton} onPress={handleSignOut}>
-                        <Icon name="sign-out" size={30} color="#fff" />
-                        <Text style={styles.navText}>Sign Out</Text>
-                    </Pressable>
+                    </ScrollView>
+                    <View style={styles.navigationBar}>
+                        <Pressable style={styles.navButton} onPress={toggleSearchBar}>
+                            <Icon name="search" size={30} color="#fff" />
+                            <Text style={styles.navText}>Search</Text>
+                        </Pressable>
+                        <Pressable style={styles.navButton} onPress={handleHelp}>
+                            <Icon name="question-circle" size={30} color="#fff" />
+                            <Text style={styles.navText}>Help</Text>
+                        </Pressable>
+                        <Pressable style={styles.navButton} onPress={handleFavorites}>
+                            <Icon name="star" size={30} color="#fff" />
+                            {favoriteCount > 0 && (
+                                <View style={styles.badge}>
+                                    <Text style={styles.badgeText}>{favoriteCount}</Text>
+                                </View>
+                            )}
+                            <Text style={styles.navText}>Favorites</Text>
+                        </Pressable>
+                        <Pressable style={styles.navButton} onPress={handleSignOut}>
+                            <Icon name="sign-out" size={30} color="#fff" />
+                            <Text style={styles.navText}>Sign Out</Text>
+                        </Pressable>
+                    </View>
                 </View>
-            </View>
-        </ImageBackground>
+            </ImageBackground>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -144,14 +165,14 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     header: {
-        justifyContent: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
     },
     logo: {
         width: 100,
         height: 100,
-        marginBottom: 10,
+        marginRight: 10, // Add margin to the right of the logo
     },
     welcomeText: {
         fontSize: 24,
