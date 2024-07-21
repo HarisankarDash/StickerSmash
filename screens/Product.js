@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Image, Pressable, TextInput, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFavorites } from './FavoritesContext';
 
@@ -40,26 +40,31 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
     // Sample data for cards
     const cards = [
         {
+            id: 1,
             name: 'Sony WH-CH520, Wireless On-Ear Bluetooth Headphones with Mic',
             info: 'MRP ₹3,989',
             image: require('../assets/img1.jpg'),
         },
         {
+            id: 2,
             name: 'Apple Watch SE (2nd Gen)',
             info: '$159.99',
             image: require('../assets/img3.jpg'),
         },
         {
+            id: 3,
             name: 'Nike SB Dunk Low White and Gum Light Brown NEW - Size 10 Mens US - White Black',
             info: '$220',
             image: require('../assets/img4.jpg'),
         },
         {
+            id: 4,
             name: 'Apple AirPods Pro IPRIME revendedora Apple Tel:(11) 99298-9047',
-            info: 'MRP₹30,495',
+            info: 'MRP ₹30,495',
             image: require('../assets/img5.jpg'),
         },
         {
+            id: 5,
             name: 'Google Pixel Watch 2',
             info: 'From $289.99',
             image: require('../assets/img6.jpg'),
@@ -77,6 +82,11 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
         setSearchQuery(query);
         const filtered = cards.filter(card => card.name.toLowerCase().includes(query.toLowerCase()));
         setFilteredCards(filtered);
+    };
+
+    // Navigate to BuyScreen and pass product details
+    const handleBuyNow = (product) => {
+        onNavigate('Buy', { product });
     };
 
     return (
@@ -102,17 +112,24 @@ const AnotherWelcomeScreen = ({ onSignOut, onNavigate }) => {
                     )}
                     <ScrollView contentContainerStyle={styles.cardsContainer}>
                         {filteredCards.map((card, index) => (
-                            <View key={index} style={styles.card}>
+                            <View key={card.id} style={styles.card}>
                                 <Image source={card.image} style={styles.cardImage} />
                                 <Text style={styles.cardName}>{card.name}</Text>
                                 <Text style={styles.cardInfo}>{card.info}</Text>
                                 <View style={styles.buttonContainer}>
                                     <Pressable onPress={() => toggleFavorite(card)}>
                                         <Icon
-                                            name={favorites.some(fav => fav.name === card.name) ? 'star' : 'star-o'}
+                                            name={favorites.some(fav => fav.id === card.id) ? 'star' : 'star-o'}
                                             size={30}
-                                            color={favorites.some(fav => fav.name === card.name) ? 'gold' : 'gray'}
+                                            color={favorites.some(fav => fav.id === card.id) ? 'gold' : 'gray'}
                                         />
+                                        <Text style={styles.favoriteText}></Text>
+                                    </Pressable>
+                                    <Pressable style={styles.buyButton} onPress={() => handleBuyNow(card)}>
+                                        <View style={styles.buyIcon}>
+                                            <Icon name="shopping-cart" size={20} color="#fff" />
+                                        </View>
+                                        <Text style={styles.buyButtonText}>Buy Now</Text>
                                     </Pressable>
                                 </View>
                             </View>
@@ -216,9 +233,28 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
         width: '100%',
         marginTop: 10,
         position: 'relative', // Ensure the badge is positioned relative to its parent
+    },
+    buyButton: {
+        alignItems: 'center',
+    },
+    buyIcon: {
+        backgroundColor: 'purple',
+        padding: 10,
+        borderRadius: 5,
+    },
+    buyButtonText: {
+        color: 'purple',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 5,
+    },
+    favoriteText: {
+        fontSize: 12,
+        marginTop: 5,
     },
     badge: {
         position: 'absolute',
