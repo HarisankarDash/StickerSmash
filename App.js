@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AnotherWelcomeScreen from './screens/Product'; // Rename to AnotherWelcomeScreen
@@ -14,19 +15,46 @@ const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [productData, setProductData] = useState(null); // State to hold product data
 
-    const handleLogin = (email, password) => {
+    // Async function to load user login state from AsyncStorage
+    const loadLoginState = async () => {
+        try {
+            const userLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+            if (userLoggedIn !== null && userLoggedIn === 'true') {
+                setIsLoggedIn(true);
+                setPage('Product'); // Navigate to Product screen if user is logged in
+            }
+        } catch (error) {
+            console.error('Error loading user login state:', error);
+        }
+    };
+
+    useEffect(() => {
+        loadLoginState(); // Load login state on component mount
+    }, []);
+
+    const handleLogin = async (email, password) => {
         // Check if the entered credentials are correct
         if (email === 'hari@123' && password === '1234') {
             setIsLoggedIn(true);
             setPage('Product'); // Navigate to Product screen after successful login
+            try {
+                await AsyncStorage.setItem('isLoggedIn', 'true');
+            } catch (error) {
+                console.error('Error saving user login state:', error);
+            }
         } else {
             alert('Invalid credentials. Please try again.');
         }
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setIsLoggedIn(false);
         setPage('Welcome'); // Navigate to Welcome screen after logout
+        try {
+            await AsyncStorage.removeItem('isLoggedIn');
+        } catch (error) {
+            console.error('Error removing user login state:', error);
+        }
     };
 
     const renderScreen = () => {
